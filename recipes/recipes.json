@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "catalog_version": "2026-w2-12-prizes",
+  "catalog_version": "2026-w2-12-prizes-quest8019",
   "updated_at": "2026-11-07",
   "source": "User-supplied Nanite Systems recipe table (8001–8012, 8019, 8026–8031); 8012 tech fossil and 8019 bomb plans are required but not consumed.",
   "prizes": [
@@ -345,21 +345,21 @@
         "Repair tiny capacitors"
       ]
     ],
-    "large capacitor bundle": [
-      [
-        {
-          "fishy large capacitor": 1,
-          "lump of electrolytic paste": 1
-        },
-        "Repair large capacitor"
-      ]
-    ],
     "length of copper wiring": [
       [
         {
           "copper ingot": 1
         },
         "Fabricate copper wiring"
+      ]
+    ],
+    "large capacitor": [
+      [
+        {
+          "fishy large capacitor": 1,
+          "lump of electrolytic paste": 1
+        },
+        "Repair large capacitor"
       ]
     ]
   },
@@ -368,11 +368,11 @@
       "id": 8019,
       "name": "unfinished bomb",
       "ingredients": {
-        "large capacitor bundle": 2,
         "broken pager": 2,
         "fried power storage module": 4,
         "silver ingot": 2,
-        "bomb plans": 1
+        "bomb plans": 1,
+        "large capacitor": 2
       },
       "not_consumed": [
         "bomb plans"
