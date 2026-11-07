@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "version": "1.0.0",
+  "files": {
+    "PUBLISH_APP_TO_GITHUB.bat": "faefa33e38550262d40d6ff3abf23800a07bd6cbf041dcbf001ce0dd1a686e76",
+    "README.txt": "e3e71ce97a25e82d3c223b1ab56f9ccb0d960447a98a18d91e06b354615ed0d5",
+    "RUN_RECIPE_TESTS.bat": "1801f9e5a60f2961bf1d8fcd2abb4174d6bed88d4311fbf275fe0ddbac5a54ec",
+    "START_Choose_Avatar_Live.bat": "1d2a5ca670af961fec32aaed163472e134159c049503512a73346e82cc651480",
+    "START_Friend_Restore.bat": "98caaa627c8cb08e85e4a67941aef11f00afb2b63ec3d209e3637502e670361a",
+    "START_Jenna_Live.bat": "46628b280194b1340a9a6d309251ff66f3bcedfcba03c44a6c9862253efbb1d8",
+    "START_Live_Choose_Inventory.bat": "52bbdc299408a5b54d9a868d384ed712523a77e4c0872af28efa09d8266018d0",
+    "UPDATE_TRACKER.bat": "c38be3d65245a2396b8bec0451a92efb03be3a07baef9c8357c16a0b86930168",
+    "live_server.py": "aba50549a2435f2378a6be714570ad841b0039308bee38292969e63a8068c2e5",
+    "publish_app.py": "888548eac29560c4ce59b29b12f594caebcbf71a69010b2cd1cab5ea7accc7fe",
+    "recipes_bundled.json": "601e3660d7dc87664a04b7150ebbe31c9f2faa058a64dbb8323cdcad80c3fdf2",
+    "test_recipe_regression.py": "33600c78b7edaa4b4edabfd692886744623fe57e67da82f839294d91c1e3b563",
+    "test_updater.py": "faa01ee0de76bca41c128a320add692a9bf432d38fbfc180da0687b3d2345c1b",
+    "update_tracker.py": "278058e1d8e447e4f00926febb74e486ce7a30d22ac7b2ecfee7ace8d3d16b5a",
+    "workshop.html": "cfd1a204e17dbbd155b5c37b221d137850d5661433e66e3fbcef40e0015c82e7"
+  }
+}
