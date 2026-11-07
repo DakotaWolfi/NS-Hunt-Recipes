@@ -9,7 +9,7 @@ The tracker downloads this JSON on startup and checks for updates approximately 
 ## Current coverage
 
 - Hunt 26 prizes **8001–8012** (12 prizes, first two weeks).
-- Capacitor repairs and smelting/conversion planning.
+- Capacitor repairs, smelting/conversion planning, and **22 numbered Smelter recipes (5004–5025)**. The workshop displays these in a separate Smelter tab.
 - Optional 8019 (unfinished bomb) is listed separately from Hunt prizes.
 - Recipe **8012** needs a tech fossil but **does not consume** it. Recipe **8019** needs bomb plans but does not consume them.
 - Non-consumed items are recorded in `not_consumed` arrays.
