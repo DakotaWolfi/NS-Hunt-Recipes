@@ -1,0 +1,382 @@
+{
+  "schema_version": 1,
+  "catalog_version": "2026-w2-12-prizes",
+  "updated_at": "2026-11-07",
+  "source": "User-supplied Nanite Systems recipe table (8001–8012, 8019, 8026–8031); 8012 tech fossil and 8019 bomb plans are required but not consumed.",
+  "prizes": [
+    {
+      "id": 8001,
+      "name": "Hunt Item 1",
+      "ingredients": {
+        "roll of cabling": 6,
+        "555 timer": 4,
+        "empty aerosol can": 8,
+        "cracked circuit board": 3,
+        "bronze ingot": 4
+      }
+    },
+    {
+      "id": 8002,
+      "name": "Hunt Item 2",
+      "ingredients": {
+        "small capacitor bundle": 3,
+        "vacuum tube": 2,
+        "oscillator": 3,
+        "gold ingot": 2,
+        "cut diamond": 2
+      }
+    },
+    {
+      "id": 8003,
+      "name": "Hunt Item 3",
+      "ingredients": {
+        "servo": 2,
+        "box of cereal": 3,
+        "aluminum ingot": 5,
+        "glass sheet": 5
+      }
+    },
+    {
+      "id": 8004,
+      "name": "Hunt Item 4",
+      "ingredients": {
+        "lump of electrolytic paste": 6,
+        "leaky battery": 6,
+        "busted car gps": 2,
+        "cut sapphire": 2
+      }
+    },
+    {
+      "id": 8005,
+      "name": "Hunt Item 5",
+      "ingredients": {
+        "tiny tuna": 4,
+        "disposable e-vape": 1,
+        "seaweed clump": 6,
+        "orange soda can": 2,
+        "box of cereal": 1
+      }
+    },
+    {
+      "id": 8006,
+      "name": "Hunt Item 6",
+      "ingredients": {
+        "servo": 2,
+        "roll of electrical tape": 1,
+        "bronze ingot": 1,
+        "cut quartz": 3,
+        "lead ingot": 3
+      }
+    },
+    {
+      "id": 8007,
+      "name": "Hunt Item 7",
+      "ingredients": {
+        "medium capacitor bundle": 2,
+        "length of copper wiring": 4,
+        "tv remote": 2,
+        "broken pager": 2,
+        "glass sheet": 6
+      }
+    },
+    {
+      "id": 8008,
+      "name": "Hunt Item 8",
+      "ingredients": {
+        "giant capacitor": 1,
+        "cassette tape": 1,
+        "oscillator": 2,
+        "busted car gps": 3,
+        "steel ingot": 3
+      }
+    },
+    {
+      "id": 8009,
+      "name": "Hunt Item 9",
+      "ingredients": {
+        "giant capacitor": 2,
+        "length of copper wiring": 10,
+        "steel ingot": 4,
+        "gold ingot": 1,
+        "broken skeletal bracing": 1
+      }
+    },
+    {
+      "id": 8010,
+      "name": "Hunt Item 10",
+      "ingredients": {
+        "fraggle-deficient rock": 3,
+        "roll of cabling": 20,
+        "oscillator": 5,
+        "tech fossil": 4,
+        "aluminum ingot": 3
+      }
+    },
+    {
+      "id": 8011,
+      "name": "Hunt Item 11",
+      "ingredients": {
+        "tiny capacitor bundle": 2,
+        "roll of cabling": 10,
+        "cracked circuit board": 4,
+        "tin can": 3,
+        "servo": 4
+      }
+    },
+    {
+      "id": 8012,
+      "name": "Hunt Item 12",
+      "ingredients": {
+        "tech fossil": 1,
+        "cut sapphire": 4,
+        "glass sheet": 4,
+        "broken flashbang generator": 1,
+        "silver ingot": 2
+      },
+      "not_consumed": [
+        "tech fossil"
+      ]
+    }
+  ],
+  "conversions": {
+    "small capacitor bundle": [
+      [
+        {
+          "fishy small capacitor bundle": 1,
+          "lump of electrolytic paste": 2
+        },
+        "Repair small capacitor"
+      ]
+    ],
+    "medium capacitor bundle": [
+      [
+        {
+          "fishy medium capacitor bundle": 1,
+          "lump of electrolytic paste": 2
+        },
+        "Repair medium capacitor"
+      ]
+    ],
+    "giant capacitor": [
+      [
+        {
+          "fishy giant capacitor": 1,
+          "lump of electrolytic paste": 1
+        },
+        "Repair giant capacitor"
+      ]
+    ],
+    "cut sapphire": [
+      [
+        {
+          "raw sapphire": 1
+        },
+        "Cut sapphire"
+      ]
+    ],
+    "cut diamond": [
+      [
+        {
+          "raw diamond": 1
+        },
+        "Cut diamond"
+      ]
+    ],
+    "cut quartz": [
+      [
+        {
+          "raw quartz": 1
+        },
+        "Cut quartz"
+      ]
+    ],
+    "gold ingot": [
+      [
+        {
+          "gold nugget": 1
+        },
+        "Smelt gold nugget"
+      ]
+    ],
+    "lead ingot": [
+      [
+        {
+          "lead bullet tip": 6
+        },
+        "Smelt 6 lead tips"
+      ],
+      [
+        {
+          "scrap of lead shielding": 6
+        },
+        "Smelt shielding"
+      ]
+    ],
+    "aluminum ingot": [
+      [
+        {
+          "bauxite clod": 1
+        },
+        "Smelt bauxite"
+      ],
+      [
+        {
+          "empty soda can": 5
+        },
+        "Smelt soda cans"
+      ],
+      [
+        {
+          "empty aerosol can": 5
+        },
+        "Smelt aerosol cans"
+      ],
+      [
+        {
+          "orange soda can": 5
+        },
+        "Smelt orange soda cans"
+      ]
+    ],
+    "glass sheet": [
+      [
+        {
+          "message in a bottle": 1
+        },
+        "Smelt bottle"
+      ],
+      [
+        {
+          "lump of glass slag": 1
+        },
+        "Smelt slag"
+      ],
+      [
+        {
+          "lump of pure silicon": 1
+        },
+        "Smelt silicon"
+      ]
+    ],
+    "steel ingot": [
+      [
+        {
+          "handful of loose screws": 5
+        },
+        "Smelt screws"
+      ],
+      [
+        {
+          "piton": 4
+        },
+        "Smelt pitons"
+      ],
+      [
+        {
+          "set of broken subcutaneous arm plates": 1
+        },
+        "Smelt arm plates"
+      ],
+      [
+        {
+          "iron ingot": 2,
+          "coal lump": 2
+        },
+        "Smelt iron + coal"
+      ]
+    ],
+    "bronze ingot": [
+      [
+        {
+          "brass shell casing": 6
+        },
+        "Smelt brass casings"
+      ],
+      [
+        {
+          "copper ingot": 1,
+          "tin ingot": 1
+        },
+        "Alloy copper + tin"
+      ]
+    ],
+    "copper ingot": [
+      [
+        {
+          "copper node": 1
+        },
+        "Smelt copper node"
+      ],
+      [
+        {
+          "length of copper wiring": 5
+        },
+        "Smelt wiring"
+      ],
+      [
+        {
+          "set of broken subcutaneous leg plates": 1
+        },
+        "Smelt leg plates"
+      ]
+    ],
+    "tin ingot": [
+      [
+        {
+          "tin can": 3
+        },
+        "Smelt tin cans"
+      ]
+    ],
+    "iron ingot": [
+      [
+        {
+          "iron lump": 1
+        },
+        "Smelt iron lump"
+      ]
+    ],
+    "tiny capacitor bundle": [
+      [
+        {
+          "fishy tiny capacitor bundle": 1,
+          "lump of electrolytic paste": 2
+        },
+        "Repair tiny capacitors"
+      ]
+    ],
+    "large capacitor bundle": [
+      [
+        {
+          "fishy large capacitor": 1,
+          "lump of electrolytic paste": 1
+        },
+        "Repair large capacitor"
+      ]
+    ],
+    "length of copper wiring": [
+      [
+        {
+          "copper ingot": 1
+        },
+        "Fabricate copper wiring"
+      ]
+    ]
+  },
+  "crafting": [
+    {
+      "id": 8019,
+      "name": "unfinished bomb",
+      "ingredients": {
+        "large capacitor bundle": 2,
+        "broken pager": 2,
+        "fried power storage module": 4,
+        "silver ingot": 2,
+        "bomb plans": 1
+      },
+      "not_consumed": [
+        "bomb plans"
+      ]
+    }
+  ]
+}
