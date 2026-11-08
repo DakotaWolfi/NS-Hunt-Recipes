@@ -1,0 +1,42 @@
+name: Publish NS Hunt Tracker release
+on:
+  push:
+    paths:
+      - 'app/manifest.json'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package minimal checked release
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib, zipfile
+          root=pathlib.Path('app')
+          m=json.loads((root/'manifest.json').read_text(encoding='utf-8'))
+          names=list(m['files'])+['manifest.json']
+          for n, h in m['files'].items():
+              assert hashlib.sha256((root/n).read_bytes()).hexdigest()==h,(n,'hash mismatch')
+          out=pathlib.Path('dist')
+          out.mkdir(exist_ok=True)
+          dest=out/('NS_Hunt_Tracker_v'+m['version']+'.zip')
+          with zipfile.ZipFile(dest,'w',zipfile.ZIP_DEFLATED) as z:
+              for name in names:
+                  z.write(root/name, 'NS_Hunt_Tracker/'+name)
+          print('Release bundle:',dest,'files:',len(names))
+          PY
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION=$(python3 -c "import json; print(json.load(open('app/manifest.json'))['version'])")
+          TAG="v${VERSION}"
+          FILE="dist/NS_Hunt_Tracker_v${VERSION}.zip"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$FILE" --clobber
+          else
+            gh release create "$TAG" "$FILE" --title "NS Hunt Tracker ${TAG}" --notes "Minimal Windows release: START_HUNT.bat and RESTORE_HUNT.bat; updater and core runtime. The tracker preserves local inventories and can archive superseded launchers into legacy/ during updates."
+          fi
