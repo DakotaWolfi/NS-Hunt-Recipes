@@ -1,6 +1,17 @@
 NS Hunt Tracker v1.2.1 — live and historical restore
 ==================================================
 
+PYTHON REQUIREMENT (WINDOWS)
+----------------------------
+Recommended: Python 3.12, 64-bit. A compatible Python 3 installation
+with the Windows "py" launcher is required; Python 3.12 is not pinned.
+Official download: https://www.python.org/downloads/windows/
+
+During installation, include the Python Launcher ("py") and optionally
+add Python to PATH. Check in Command Prompt: py -3 --version
+The tracker uses only Python's standard library: no pip install needed.
+Do not download or commit the Python installer into this repository.
+
 NORMAL START:   START_HUNT.bat
 FULL RESTORE:   RESTORE_HUNT.bat
 UPDATE:         UPDATE_TRACKER.bat (or webpage Update tracker)
