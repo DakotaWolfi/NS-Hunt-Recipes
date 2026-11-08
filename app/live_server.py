@@ -493,7 +493,13 @@ if __name__=='__main__':
     if not state.get('offsets') and not state.get('events'):
         state['mode']=args.mode;state['fresh']=True
     if state.get('mode') != args.mode:
-        raise SystemExit('ERROR: Existing state mode is different. Use separate launchers/state files.')
+        # Legacy versions could write a cursor tagged for the other mode.
+        # Log-reader offsets are disposable. Inventory files are not.
+        previous=backup_file(DB)
+        if previous:print('Archived incompatible log-reader state:',previous,flush=True)
+        print('Resetting incompatible',args.mode,'log cursor; saved inventory is untouched.',flush=True)
+        state={'offsets':{},'events':[],'seq':0,'pending':None,'fresh':True,
+               'session':str(uuid.uuid4()),'mode':args.mode}
     if not log_dir.is_dir():raise SystemExit(f'ERROR: Firestorm account log folder not found: {log_dir}')
     inventory_file,fresh_inventory=prepare_inventory(log_dir.name,args.mode,args.inventory)
     if fresh_inventory:
