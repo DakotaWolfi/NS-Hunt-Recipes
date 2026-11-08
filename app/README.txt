@@ -34,3 +34,17 @@ updates execute local Python source. No updater can verify a publisher's intent.
 TESTS
 RUN_RECIPE_TESTS.bat checks recipes. Run `py -3 test_updater.py` for updater
 checks. Real Windows/Firestorm integration still needs on-device testing.
+
+
+v1.1 — Browser sound alerts
+---------------------------
+On the Alerts tab, enable sound alerts, adjust the volume, and click a Test
+button once to unlock audio. Set individual watched loot names and toggle
+recipe-ready notifications for hunt prizes and special crafting (bomb).
+Defaults watch raw sapphire and cut sapphire and all prizes + bomb.
+Loot ping is a short two-note sound; recipe-ready uses a three-note tune.
+Alerts apply only to confirmed newly appended Firestorm loot while the browser
+page is open and audio is unlocked. Historical restore is silent; inventory
+imports, initial browser startup and manual stock edits do not ping.
+Audio preferences are separate for each avatar/account and browser; the tracker
+never uploads these settings to GitHub. App updates keep inventory files and logs.
