@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "version": "1.2.4",
+  "version": "1.2.5",
   "files": {
     "START_HUNT.bat": "cc0b1a1b9cceb2f457c7bd7a4bd2e165ec58e746a3ff87612f236c3bcc324795",
     "RESTORE_HUNT.bat": "20fe980b05602b4c86f82b82de6bedf13a8bb8bc42d985e709eb8f6ff93c45cb",
     "UPDATE_TRACKER.bat": "c38be3d65245a2396b8bec0451a92efb03be3a07baef9c8357c16a0b86930168",
-    "live_server.py": "ee2ad3d12e25a84ae04c56082febce3ff0366bd56153047b0cf7e27dc17713ca",
+    "live_server.py": "8b1975bb20c282a367ee1ebf8d2090311c436b97200d6a5ba1f00c45a6b77af9",
     "update_tracker.py": "a7277401102d6fce37635b42f1e8545e207a77cd520364de242eceb1838d6825",
     "workshop.html": "3334b456b355d3b27a73550f9f428b59f71be1a2f6a885f25ac5dfbc12861052",
     "recipes_bundled.json": "601e3660d7dc87664a04b7150ebbe31c9f2faa058a64dbb8323cdcad80c3fdf2",
