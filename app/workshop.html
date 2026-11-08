@@ -165,7 +165,7 @@ async function loadWorkingInventory(data){
   // Import that saved stock on a *first* file-backed startup, never after
   // the user explicitly chose Start fresh.
   if(inv.allow_browser_migration && Object.keys(inv.stock||{}).length===0 && Object.values(state.stock||{}).some(n=>Number(n)>0)){
-    inv={...inv,stock:{...state.stock},verified:{...state.verified},done:{...state.done},liveSeq:state.liveSeq};
+    inv={...inv,stock:{...state.stock},verified:{...state.verified},done:{...state.done},liveSeq:reply.baseline_seq};
     migratedFromBrowser=true;
   }
   state={...state,...inv,stock:{...newState(data.mode,avatarAccount).stock,...inv.stock},verified:inv.verified||{},done:inv.done||{}};
