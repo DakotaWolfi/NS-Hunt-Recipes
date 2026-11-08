@@ -8,9 +8,11 @@ BASE='https://raw.githubusercontent.com/DakotaWolfi/NS-Hunt-Recipes/main/app/'
 MANIFEST='manifest.json'
 MAX_SIZE=2_000_000
 PROGRAM_FILES={'live_server.py','workshop.html','recipes_bundled.json','test_recipe_regression.py',
- 'RUN_RECIPE_TESTS.bat','START_Choose_Avatar_Live.bat','START_Friend_Restore.bat',
- 'START_Jenna_Live.bat','START_Live_Choose_Inventory.bat','README.txt',
- 'update_tracker.py','test_alerts.js','test_updater.py','UPDATE_TRACKER.bat','PUBLISH_APP_TO_GITHUB.bat','publish_app.py'}
+ 'RUN_RECIPE_TESTS.bat','START_HUNT.bat','RESTORE_HUNT.bat','README.txt',
+ 'update_tracker.py','test_alerts.js','test_updater.py','test_startup.py',
+ 'UPDATE_TRACKER.bat','PUBLISH_APP_TO_GITHUB.bat','publish_app.py'}
+OBSOLETE_LAUNCHERS=('START_Choose_Avatar_Live.bat','START_Friend_Restore.bat',
+ 'START_Jenna_Live.bat','START_Live_Choose_Inventory.bat')
 
 def download(name):
     with urllib.request.urlopen(urllib.request.Request(BASE+name,headers={'User-Agent':'NS-Hunt-Tracker-Updater/1.0','Cache-Control':'no-cache'}),timeout=12) as req:
@@ -72,6 +74,10 @@ def apply(stage_dir):
             if (backups/name).exists():shutil.copy2(backups/name,HERE/name)
         raise
     finally:shutil.rmtree(stage_dir,ignore_errors=True)
+    # Old startup scripts are confusing; archive them rather than deleting.
+    for filename in OBSOLETE_LAUNCHERS:
+        old=HERE/filename
+        if old.is_file():shutil.move(str(old),str(backups/filename))
     return remote['version']
 
 def wait_port_free(port,timeout=20):
