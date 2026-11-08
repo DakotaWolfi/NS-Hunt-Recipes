@@ -1,18 +1,14 @@
 {
   "schema": 1,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "files": {
-    "PUBLISH_APP_TO_GITHUB.bat": "faefa33e38550262d40d6ff3abf23800a07bd6cbf041dcbf001ce0dd1a686e76",
-    "README.txt": "9bea9804b1cf389222c1b7d51255d0aa0bfe97dcca22d10ea388880c7ca8671e",
-    "RUN_RECIPE_TESTS.bat": "1801f9e5a60f2961bf1d8fcd2abb4174d6bed88d4311fbf275fe0ddbac5a54ec",
+    "START_HUNT.bat": "5f425497311477d961786707fa700d1ad8305c5e85de588aacd875db5cd2172f",
+    "RESTORE_HUNT.bat": "97258af101bf0dcc453514e0f834da519fccd4e7e9584dea778b9212df458c54",
     "UPDATE_TRACKER.bat": "c38be3d65245a2396b8bec0451a92efb03be3a07baef9c8357c16a0b86930168",
-    "live_server.py": "d01472fe15bbaa92eb8a5bba3e359e9993b9f0862be1e33b4bc7f6f1affee2c9",
-    "publish_app.py": "32c7986a43cbe0d8a9ea694a2b3fd9438befc7afdf2070d830bbde642f1719d8",
+    "live_server.py": "91559edfbf5676d57f45cfdaaf522c09dfed90f9a33853ee4d07e4c1fb1e0c3b",
+    "update_tracker.py": "a7277401102d6fce37635b42f1e8545e207a77cd520364de242eceb1838d6825",
+    "workshop.html": "27d3c6bf13302fa8d7264213b9a20788b0f9289d3bb2e999b23ee390ad42783e",
     "recipes_bundled.json": "601e3660d7dc87664a04b7150ebbe31c9f2faa058a64dbb8323cdcad80c3fdf2",
-    "test_alerts.js": "7e9c624a5553efa01020c175d7af62aa7d7271c4b8897cdc1e1e1c1248fa7382",
-    "test_recipe_regression.py": "33600c78b7edaa4b4edabfd692886744623fe57e67da82f839294d91c1e3b563",
-    "test_updater.py": "c185ca86a1f89ca1b09ee4b4f421d5688018f0146f763d305b89d0f772ed1cbe",
-    "update_tracker.py": "4b05bca2aad3626be75e8f54b92993792b7d691d9cf6c474dafecd77f3033b9a",
-    "workshop.html": "1c86480fd4ab835d3a507cd255252247948bd93f245f5b4344a46c197b446bac"
+    "README.txt": "020247efa02b02f11f7583771fe8ddd7513fc2655397eeee180ce120862a7d0d"
   }
 }
