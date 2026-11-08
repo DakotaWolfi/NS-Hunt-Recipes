@@ -1,49 +1,40 @@
-NS HUNT TRACKER v1.0.0 — ONE APPLICATION / TWO MODES
+NS HUNT TRACKER v1.2 — ONE APPLICATION, TWO LAUNCHERS
 
-Start with START_Live_Choose_Inventory.bat to select an existing inventory.
-Start with START_Friend_Restore.bat to reconstruct from historical Firestorm logs.
-Both use the same live_server.py, workshop.html, and GitHub recipe feed.
+START_HUNT.bat   — Normal live tracker
+RESTORE_HUNT.bat — Rebuild inventory from historical Firestorm chat logs
 
-APPLICATION UPDATE
-The webpage includes Check updates and Update tracker buttons. Update checks use:
- https://raw.githubusercontent.com/DakotaWolfi/NS-Hunt-Recipes/main/app/manifest.json
-The stand-alone UPDATE_TRACKER.bat is the fallback (close the tracker first).
-All downloaded source files are SHA256 checked against the manifest. Only known
-program files are replaced; program_backups/ stores the prior version.
-Inventories, Firestorm logs, state JSON, and recipes_cache.json are excluded.
-The webpage update restarts the tracker in the same avatar/mode/inventory.
+Both use live_server.py, workshop.html and the SAME GitHub recipe feed.
 
-FIRST-TIME GITHUB PUBLICATION (ONE TIME)
-The tracker application MUST be published to GitHub before either updater works.
-This ZIP is not evidence that GitHub publishing already occurred.
-1. Install Git for Windows, sign in with Git Credential Manager and set Git author
-   name/email. Have push access to DakotaWolfi/NS-Hunt-Recipes.
-2. Close the tracker and run PUBLISH_APP_TO_GITHUB.bat in this directory.
-3. Verify https://github.com/DakotaWolfi/NS-Hunt-Recipes/tree/main/app
-4. After that, future releases use the SAME publisher with an incremented
-   application version in publish_app.py and a subsequent Git push.
-The publication helper clones the recipe repository and commits ONLY whitelisted
-application files into app/. No inventories, chat logs or credentials are published.
-Recipe updates themselves remain separate and automatically refresh every 10 min.
+NORMAL STARTUP
+1. The tracker discovers Firestorm account directories with chat-*.txt logs.
+2. Choose the account if more than one exists.
+3. If a saved inventory exists for the account, choose Continue (default)
+   or New (start an empty inventory). Multiple matching saves are listed.
+4. If no saved inventory exists, an empty JSON is created automatically.
+5. Live mode skips old chat history when it has no prior cursor.
 
-SAFETY
-Back up inventory JSON manually before the first migration. Do not run restore
-against your working live inventory. Keep the GitHub repository trusted; app
-updates execute local Python source. No updater can verify a publisher's intent.
+A new inventory is stored in inventories/<account>.json. Existing valid JSON
+saves are reused in their original location; CSV files are converted to a
+persistent .working.json next to the CSV. Never mix two avatars' files.
+Choosing New backs up the existing save in inventory_backups/ before creating
+an empty inventory. Associated old log cursors are backed up too.
+
+RESTORE MODE
+Historical restore uses the same application but its own separate state and
+inventories/<account>.restored.json. Starting restore again backs up previous
+restore output and rebuilds from available logs. This is an approximation:
+trades and missing logs cannot be reconstructed automatically.
+
+GITHUB UPDATES
+The webpage has Check updates / Update tracker; UPDATE_TRACKER.bat is the
+manual fallback (close running trackers first). Updates replace only program
+files verified by SHA256, not inventories, log cursor files, or recipes cache.
+Legacy launchers are archived in program_backups/ after updating to v1.2.
+Keep backup copies of important inventories regardless.
+
+ALERTS
+The Alerts tab supports sounds, watchlist, recipe-ready notifications and volume.
+Your browser needs a test-sound click to allow audio.
 
 TESTS
-RUN_RECIPE_TESTS.bat checks recipes. Run `py -3 test_updater.py` for updater
-checks. Real Windows/Firestorm integration still needs on-device testing.
-
-v1.1 — Browser sound alerts
----------------------------
-On the Alerts tab, enable sound alerts, adjust the volume, and click a Test
-button once to unlock audio. Set individual watched loot names and toggle
-recipe-ready notifications for hunt prizes and special crafting (bomb).
-Defaults watch raw sapphire and cut sapphire and all prizes + bomb.
-Loot ping is a short two-note sound; recipe-ready uses a three-note tune.
-Alerts apply only to confirmed newly appended Firestorm loot while the browser
-page is open and audio is unlocked. Historical restore is silent; inventory
-imports, initial browser startup and manual stock edits do not ping.
-Audio preferences are separate for each avatar/account and browser; the tracker
-never uploads these settings to GitHub. App updates keep inventory files and logs.
+RUN_RECIPE_TESTS.bat; py -3 test_startup.py; py -3 test_updater.py
