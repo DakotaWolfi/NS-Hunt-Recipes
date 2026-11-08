@@ -12,7 +12,8 @@ PROGRAM_FILES={'live_server.py','workshop.html','recipes_bundled.json','test_rec
  'update_tracker.py','test_alerts.js','test_updater.py','test_startup.py',
  'UPDATE_TRACKER.bat','PUBLISH_APP_TO_GITHUB.bat','publish_app.py'}
 OBSOLETE_LAUNCHERS=('START_Choose_Avatar_Live.bat','START_Friend_Restore.bat',
- 'START_Jenna_Live.bat','START_Live_Choose_Inventory.bat')
+ 'START_Jenna_Live.bat','START_Live_Choose_Inventory.bat',
+ 'START_Live.bat','START_Restore.bat','START_Jenna_Live_v3.bat')
 
 def download(name):
     with urllib.request.urlopen(urllib.request.Request(BASE+name,headers={'User-Agent':'NS-Hunt-Tracker-Updater/1.0','Cache-Control':'no-cache'}),timeout=12) as req:
@@ -33,13 +34,24 @@ def local_version():
     try:return json.loads((HERE/MANIFEST).read_text(encoding='utf-8')).get('version','unknown')
     except Exception:return 'unknown'
 
+def needs_update(manifest):
+    # Version alone is insufficient: launcher scripts can be absent or stale.
+    if manifest['version'] != local_version():
+        return True
+    for name, expected in manifest['files'].items():
+        path=HERE/name
+        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest()!=expected:
+            return True
+    # Also allow same-version cleanup of old launchers.
+    return any((HERE/name).is_file() for name in OBSOLETE_LAUNCHERS)
+
 def status():
     remote=remote_manifest()
-    return {'current':local_version(),'latest':remote['version'],'available':remote['version']!=local_version(),'url':BASE}
+    return {'current':local_version(),'latest':remote['version'],'available':needs_update(remote),'url':BASE}
 
 def stage():
     manifest=remote_manifest()
-    if manifest['version']==local_version():return None,manifest
+    if not needs_update(manifest):return None,manifest
     temp=Path(tempfile.mkdtemp(prefix='ns_hunt_update_'))
     try:
         for name,expected in manifest['files'].items():
@@ -74,10 +86,16 @@ def apply(stage_dir):
             if (backups/name).exists():shutil.copy2(backups/name,HERE/name)
         raise
     finally:shutil.rmtree(stage_dir,ignore_errors=True)
-    # Old startup scripts are confusing; archive them rather than deleting.
+    # Archive old launchers visibly. No user data is removed.
+    legacy=HERE/'legacy'
     for filename in OBSOLETE_LAUNCHERS:
         old=HERE/filename
-        if old.is_file():shutil.move(str(old),str(backups/filename))
+        if old.is_file():
+            legacy.mkdir(exist_ok=True)
+            dest=legacy/filename
+            if dest.exists():
+                dest=legacy/(old.stem+'_'+time.strftime('%Y%m%d_%H%M%S')+old.suffix)
+            shutil.move(str(old),str(dest))
     return remote['version']
 
 def wait_port_free(port,timeout=20):
