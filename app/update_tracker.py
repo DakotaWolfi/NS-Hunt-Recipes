@@ -10,7 +10,7 @@ MAX_SIZE=2_000_000
 PROGRAM_FILES={'live_server.py','workshop.html','recipes_bundled.json','test_recipe_regression.py',
  'RUN_RECIPE_TESTS.bat','START_Choose_Avatar_Live.bat','START_Friend_Restore.bat',
  'START_Jenna_Live.bat','START_Live_Choose_Inventory.bat','README.txt',
- 'update_tracker.py','test_updater.py','UPDATE_TRACKER.bat','PUBLISH_APP_TO_GITHUB.bat','publish_app.py'}
+ 'update_tracker.py','test_alerts.js','test_updater.py','UPDATE_TRACKER.bat','PUBLISH_APP_TO_GITHUB.bat','publish_app.py'}
 
 def download(name):
     with urllib.request.urlopen(urllib.request.Request(BASE+name,headers={'User-Agent':'NS-Hunt-Tracker-Updater/1.0','Cache-Control':'no-cache'}),timeout=12) as req:
