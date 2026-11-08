@@ -1,40 +1,24 @@
-NS HUNT TRACKER v1.2 — ONE APPLICATION, TWO LAUNCHERS
+NS Hunt Tracker v1.2.1 — live and historical restore
+==================================================
 
-START_HUNT.bat   — Normal live tracker
-RESTORE_HUNT.bat — Rebuild inventory from historical Firestorm chat logs
+NORMAL START:   START_HUNT.bat
+FULL RESTORE:   RESTORE_HUNT.bat
+UPDATE:         UPDATE_TRACKER.bat (or webpage Update tracker)
 
-Both use live_server.py, workshop.html and the SAME GitHub recipe feed.
+Both launchers run live_server.py; only startup parameters differ.
+The app detects Firestorm accounts and reuses per-avatar saved inventories.
+Restore replays existing chat logs; do not restore an already-correct inventory.
 
-NORMAL STARTUP
-1. The tracker discovers Firestorm account directories with chat-*.txt logs.
-2. Choose the account if more than one exists.
-3. If a saved inventory exists for the account, choose Continue (default)
-   or New (start an empty inventory). Multiple matching saves are listed.
-4. If no saved inventory exists, an empty JSON is created automatically.
-5. Live mode skips old chat history when it has no prior cursor.
+The updater repairs missing/stale launchers even at the same version and moves
+obsolete START_*.bat scripts into legacy/ before they are removed from the
+installation root. Inventories, log cursors, recipes cache, and settings are
+never included in application releases or replaced by the updater.
 
-A new inventory is stored in inventories/<account>.json. Existing valid JSON
-saves are reused in their original location; CSV files are converted to a
-persistent .working.json next to the CSV. Never mix two avatars' files.
-Choosing New backs up the existing save in inventory_backups/ before creating
-an empty inventory. Associated old log cursors are backed up too.
+For an old installation whose updater rejects newer manifest filenames, use the
+one-time migration from the v1.2.1 release ZIP (copy UPDATE_TRACKER.bat and
+update_tracker.py into the current application folder, then run UPDATE_TRACKER.bat
+with the tracker stopped). Back up your app folder beforehand.
 
-RESTORE MODE
-Historical restore uses the same application but its own separate state and
-inventories/<account>.restored.json. Starting restore again backs up previous
-restore output and rebuilds from available logs. This is an approximation:
-trades and missing logs cannot be reconstructed automatically.
-
-GITHUB UPDATES
-The webpage has Check updates / Update tracker; UPDATE_TRACKER.bat is the
-manual fallback (close running trackers first). Updates replace only program
-files verified by SHA256, not inventories, log cursor files, or recipes cache.
-Legacy launchers are archived in program_backups/ after updating to v1.2.
-Keep backup copies of important inventories regardless.
-
-ALERTS
-The Alerts tab supports sounds, watchlist, recipe-ready notifications and volume.
-Your browser needs a test-sound click to allow audio.
-
-TESTS
-RUN_RECIPE_TESTS.bat; py -3 test_startup.py; py -3 test_updater.py
+Developer tests: python test_updater.py; python test_startup.py;
+python test_recipe_regression.py; node test_alerts.js.
+Repo: https://github.com/DakotaWolfi/NS-Hunt-Recipes
