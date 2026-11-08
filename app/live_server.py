@@ -247,7 +247,7 @@ def prepare_inventory(account, mode, preferred='auto', home=HERE):
                 break
             print('Enter C or N.')
     # No saved inventory, or explicitly start fresh: create empty file.
-    atomic_json(dest,{'stock':{},'verified':{},'done':{}})
+    atomic_json(dest,{'stock':{},'verified':{},'done':{},'allow_browser_migration':not bool(candidates)})
     print('Started a new persistent inventory:',dest,flush=True)
     return dest,True
 
@@ -410,6 +410,7 @@ class Handler(BaseHTTPRequestHandler):
                 existing=inventory_snapshot()
                 # Preserve extra custom fields carried in JSON backups.
                 existing.update({k:obj[k] for k in ('stock','verified','done','liveSeq','monitorSession') if k in obj})
+                existing.pop('allow_browser_migration',None)
                 atomic_json(inventory_file,existing)
             self.send_response(204);self.end_headers()
         except Exception as exc:
