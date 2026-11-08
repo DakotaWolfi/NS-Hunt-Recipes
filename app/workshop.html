@@ -171,7 +171,11 @@ async function loadWorkingInventory(data){
   state={...state,...inv,stock:{...newState(data.mode,avatarAccount).stock,...inv.stock},verified:inv.verified||{},done:inv.done||{}};
   // Earlier events from a previous session must not be replayed into a newly
   // selected file, but events arriving after this monitor launched must count.
-  if(typeof inv.liveSeq!=='number')state.liveSeq=reply.baseline_seq;
+  // A transferred inventory may carry an event sequence from another log-reader state.
+  // Preserve stock and completion flags; rebase the event cursor to this launch.
+  if(typeof inv.liveSeq!=='number' || (inv.monitorSession && inv.monitorSession!==data.session) || state.liveSeq>data.latest){
+   state.liveSeq=reply.baseline_seq;
+  }
   state.monitorSession=data.session;
   localStorage.setItem(STORE,JSON.stringify(state));render();
  }
