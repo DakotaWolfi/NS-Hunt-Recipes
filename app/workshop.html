@@ -158,8 +158,16 @@ async function loadWorkingInventory(data){
  const r=await fetch('/inventory',{cache:'no-store'});
  if(!r.ok)throw Error('Inventory load failed: '+r.status);
  const reply=await r.json();remotePath=reply.path;
+ let migratedFromBrowser=false;
  if(reply.inventory){
-  const inv=reply.inventory;
+  let inv=reply.inventory;
+  // Previous installs sometimes stored inventory only in browser localStorage.
+  // Import that saved stock on a *first* file-backed startup, never after
+  // the user explicitly chose Start fresh.
+  if(inv.allow_browser_migration && Object.keys(inv.stock||{}).length===0 && Object.values(state.stock||{}).some(n=>Number(n)>0)){
+    inv={...inv,stock:{...state.stock},verified:{...state.verified},done:{...state.done},liveSeq:state.liveSeq};
+    migratedFromBrowser=true;
+  }
   state={...state,...inv,stock:{...newState(data.mode,avatarAccount).stock,...inv.stock},verified:inv.verified||{},done:inv.done||{}};
   // Earlier events from a previous session must not be replayed into a newly
   // selected file, but events arriving after this monitor launched must count.
@@ -168,6 +176,7 @@ async function loadWorkingInventory(data){
   localStorage.setItem(STORE,JSON.stringify(state));render();
  }
  remoteReady=true; inventoryInitialized=true;
+ if(migratedFromBrowser){save();document.getElementById('liveBanner').textContent='Migrated saved browser inventory into an account-specific JSON file.';}
 }
 
 // Alert preferences are browser-local, scoped per avatar. No audio files or external services.
