@@ -167,6 +167,89 @@ def choose_inventory(option, account):
     if selected.suffix.lower()!='.json':raise SystemExit('Select a .json or .csv inventory')
     return selected
 
+# Only one persistent inventory per account. Existing installations are discovered
+# before creating a new file, including older v0.x JSON and CSV working copies.
+def account_key(name):
+    return re.sub(r'[^a-zA-Z0-9_-]', '_', name).lower()
+
+def account_inventory_candidates(account, home=HERE):
+    key=account_key(account)
+    roots=(home/'inventories', home)
+    found=[]
+    for root in roots:
+        if not root.is_dir(): continue
+        for p in root.iterdir():
+            if not p.is_file() or p.suffix.lower() not in ('.json','.csv'):continue
+            n=p.name.lower()
+            if any(part in n for part in ('state_', 'recipes_', 'manifest', '.backup', 'working.tmp')):continue
+            if p.suffix.lower()=='.json':
+                try:
+                    obj=json.loads(p.read_text(encoding='utf-8-sig'))
+                    if not isinstance(obj,dict) or not isinstance(obj.get('stock'),dict):continue
+                except (OSError,ValueError,UnicodeError):continue
+            elif p.suffix.lower()=='.csv':
+                with p.open(encoding='utf-8-sig',newline='') as f:
+                    if not {'item','quantity'}.issubset(set(next(csv.reader(f),[]))):continue
+            # Prefer a matching account; generic saves are offered if no match exists.
+            found.append((p.resolve(),key in n or account.lower() in n))
+    return found
+
+def backup_file(path):
+    if not path.exists():return None
+    folder=HERE/'inventory_backups';folder.mkdir(exist_ok=True)
+    stamp=time.strftime('%Y%m%d_%H%M%S')
+    dest=folder/(path.stem+'_'+stamp+'_'+uuid.uuid4().hex[:6]+path.suffix)
+    shutil.copy2(path,dest)
+    return dest
+
+def prepare_inventory(account, mode, preferred='auto', home=HERE):
+    root=home/'inventories';root.mkdir(exist_ok=True)
+    dest=root/(account_key(account)+'.json')
+    if preferred and preferred not in ('auto','ask','none'):
+        # Used only by the built-in updater to resume the same working inventory.
+        selected=choose_inventory(preferred,account)
+        return selected,False
+    if mode=='restore':
+        target=root/(account_key(account)+'.restored.json')
+        old=backup_file(target)
+        if old:print('Backed up previous restoration:',old,flush=True)
+        atomic_json(target,{'stock':{},'verified':{},'done':{},'liveSeq':0})
+        print('Restoring historical chat into:',target,flush=True)
+        return target,True
+    matches=account_inventory_candidates(account,home)
+    matching=[p for p,m in matches if m]
+    candidates=matching if matching else [p for p,m in matches]
+    # If an account-owned default save exists, it's always first.
+    if dest in candidates:candidates.remove(dest);candidates.insert(0,dest)
+    if candidates:
+        print('\nSaved inventory detected for',account,flush=True)
+        for i,path in enumerate(candidates,1):print(f'  {i}. {path.name} ({path.parent})')
+        if len(candidates)>1:
+            while True:
+                answer=input('Which saved inventory? [1]: ').strip()
+                if not answer:answer='1'
+                if answer.isdigit() and 1<=int(answer)<=len(candidates):break
+                print('Choose a listed number.')
+            chosen=candidates[int(answer)-1]
+        else:chosen=candidates[0]
+        while True:
+            answer=input('Continue saved inventory [C], or start fresh [N]? [C]: ').strip().lower()
+            if answer in ('','c','continue'):return choose_inventory(str(chosen),account),False
+            if answer in ('n','new','fresh'):
+                previous=backup_file(chosen)
+                if previous:print('Previous inventory backed up:',previous,flush=True)
+                # Never overwrite a user-selected external/old-version save.
+                if dest==chosen:pass
+                else:
+                    previous=backup_file(dest)
+                    if previous:print('Existing default saved backup:',previous,flush=True)
+                break
+            print('Enter C or N.')
+    # No saved inventory, or explicitly start fresh: create empty file.
+    atomic_json(dest,{'stock':{},'verified':{},'done':{}})
+    print('Started a new persistent inventory:',dest,flush=True)
+    return dest,True
+
 def atomic_json(path,content):
     path.parent.mkdir(parents=True,exist_ok=True)
     temp=path.with_name(path.name+'.'+uuid.uuid4().hex+'.tmp')
@@ -360,7 +443,7 @@ def monitor():
         time.sleep(0.35)
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--log-dir',default='auto');parser.add_argument('--port',type=int,default=8765);parser.add_argument('--mode',choices=['live','restore'],default='live');parser.add_argument('--reset-restore',action='store_true');parser.add_argument('--avatar',default=None,help='Display name of the Firestorm avatar');parser.add_argument('--inventory',default='none',help='ask, auto, none, or a .json/.csv path')
+    parser=argparse.ArgumentParser();parser.add_argument('--log-dir',default='auto');parser.add_argument('--port',type=int,default=8765);parser.add_argument('--mode',choices=['live','restore'],default='live');parser.add_argument('--reset-restore',action='store_true');parser.add_argument('--avatar',default=None,help='Display name of the Firestorm avatar');parser.add_argument('--inventory',default='auto',help='ask, auto, none, or a .json/.csv path')
     args=parser.parse_args()
     if args.log_dir.lower() == 'auto':
         base=Path(os.environ.get('APPDATA',str(Path.home()))) / 'Firestorm_x64'
@@ -388,12 +471,17 @@ if __name__=='__main__':
     if state.get('mode') != args.mode:
         raise SystemExit('ERROR: Existing state mode is different. Use separate launchers/state files.')
     if not log_dir.is_dir():raise SystemExit(f'ERROR: Firestorm account log folder not found: {log_dir}')
-    inventory_file=choose_inventory(args.inventory,log_dir.name)
+    inventory_file,fresh_inventory=prepare_inventory(log_dir.name,args.mode,args.inventory)
+    if fresh_inventory:
+        # Never replay an earlier session's events into a new inventory.
+        # Historical restore intentionally resets its separate cursor to zero.
+        old=backup_file(DB)
+        if old:print('Prior log cursor backed up:',old,flush=True)
+        state={'offsets':{},'events':[],'seq':0,'pending':None,'fresh':True,
+               'session':str(uuid.uuid4()),'mode':args.mode}
     if inventory_file:
-        # Check selected inventory before starting monitor; don't mutate original by scanning history.
-        inventory_snapshot()
-        print('WORKING INVENTORY:', inventory_file, flush=True)
-    else: print('No selected inventory file; using browser-local inventory.',flush=True)
+        inventory_snapshot()  # validates format before the watcher starts
+        print('WORKING INVENTORY:',inventory_file,flush=True)
     starting_seq=state['seq']
     print('Watching:',log_dir,flush=True);print('Open: http://127.0.0.1:%d/'%args.port,flush=True)
     thread=threading.Thread(target=monitor,daemon=True);thread.start()
