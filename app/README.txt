@@ -35,7 +35,6 @@ TESTS
 RUN_RECIPE_TESTS.bat checks recipes. Run `py -3 test_updater.py` for updater
 checks. Real Windows/Firestorm integration still needs on-device testing.
 
-
 v1.1 — Browser sound alerts
 ---------------------------
 On the Alerts tab, enable sound alerts, adjust the volume, and click a Test
