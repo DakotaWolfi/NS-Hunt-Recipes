@@ -218,7 +218,8 @@ def prepare_inventory(account, mode, preferred='auto', home=HERE):
         return target,True
     matches=account_inventory_candidates(account,home)
     matching=[p for p,m in matches if m]
-    candidates=matching if matching else [p for p,m in matches]
+    # Do not silently attach a different avatar's inventory to this account.
+    candidates=matching
     # If an account-owned default save exists, it's always first.
     if dest in candidates:candidates.remove(dest);candidates.insert(0,dest)
     if candidates:
@@ -442,7 +443,29 @@ def monitor():
         except Exception as e:print('Monitor issue:',repr(e),flush=True)
         time.sleep(0.35)
 
+def migrate_launchers():
+    """Make 1.1 -> 1.2 work through the OLD updater filename allowlist."""
+    scripts={
+      'START_HUNT.bat':'@echo off\r\ncd /d "%~dp0"\r\ntitle NS Hunt Tracker - Live\r\npy -3 live_server.py --mode live --log-dir auto --inventory auto --port 8765\r\nif errorlevel 1 pause\r\n',
+      'RESTORE_HUNT.bat':'@echo off\r\ncd /d "%~dp0"\r\ntitle NS Hunt Tracker - Historical Restore\r\npy -3 live_server.py --mode restore --log-dir auto --inventory auto --port 8766\r\nif errorlevel 1 pause\r\n',
+    }
+    for name,contents in scripts.items():
+        dest=HERE/name
+        if not dest.exists():dest.write_bytes(contents.encode('utf-8'))
+    obsolete=('START_Choose_Avatar_Live.bat','START_Friend_Restore.bat',
+              'START_Jenna_Live.bat','START_Live_Choose_Inventory.bat')
+    backup=HERE/'program_backups'/'legacy_launchers'
+    for name in obsolete:
+        old=HERE/name
+        if not old.exists():continue
+        try:
+            backup.mkdir(parents=True,exist_ok=True)
+            shutil.move(str(old),str(backup/name))
+        except OSError as exc:
+            print('Legacy launcher still in use, can archive after next restart:',name,exc,flush=True)
+
 if __name__=='__main__':
+    migrate_launchers()
     parser=argparse.ArgumentParser();parser.add_argument('--log-dir',default='auto');parser.add_argument('--port',type=int,default=8765);parser.add_argument('--mode',choices=['live','restore'],default='live');parser.add_argument('--reset-restore',action='store_true');parser.add_argument('--avatar',default=None,help='Display name of the Firestorm avatar');parser.add_argument('--inventory',default='auto',help='ask, auto, none, or a .json/.csv path')
     args=parser.parse_args()
     if args.log_dir.lower() == 'auto':
