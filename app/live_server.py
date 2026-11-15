@@ -35,7 +35,7 @@ ALIASES = {
  'lump of glass slag':'lump of glass slag',
  'floopy disk':'floppy disk',
  'bunch of tiny capacitors':'tiny capacitor bundle',
- 'bunch of large capacitors':'large capacitor bundle',
+ 'bunch of large capacitors':'large capacitor',
 }
 # Source recipe ingredients keyed to workshop inventory naming.
 RECIPES = {
@@ -51,7 +51,7 @@ RECIPES = {
  8029:({'fishy medium capacitor bundle':1,'lump of electrolytic paste':2},'medium capacitor bundle'),
  8031:({'fishy giant capacitor':1,'lump of electrolytic paste':1},'giant capacitor'),
  8027:({'fishy tiny capacitor bundle':1,'lump of electrolytic paste':2},'tiny capacitor bundle'),
- 8030:({'fishy large capacitor':1,'lump of electrolytic paste':1},'large capacitor bundle'),
+ 8030:({'fishy large capacitor':1,'lump of electrolytic paste':1},'large capacitor'),
  4001:({'raw sapphire':1},'cut sapphire'),4002:({'raw diamond':1},'cut diamond'),4003:({'raw quartz':1},'cut quartz'),
  5004:({'length of copper wiring':5},'copper ingot'),
  5005:({'message in a bottle':1},'glass sheet'),
